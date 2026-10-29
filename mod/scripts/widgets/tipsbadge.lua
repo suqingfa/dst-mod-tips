@@ -94,7 +94,20 @@ local config_list = {
         scale = 0.02,
         build = "wagboss_robot",
         loop = true,
-    }
+    },
+
+    rocky_boss = {
+        bank = "rocky",
+        build = "rocky_boss",
+        animation = "idle_loop",
+        loop = true,
+    },
+
+    bat_boss = {
+        build = "bat_boss",
+        animation = "fly_loop",
+        loop = true
+    },
 }
 
 for k,v in pairs(config_list) do

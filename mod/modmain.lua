@@ -331,6 +331,21 @@ local tips_list = {
             return GetTaskRemaining(TheWorld.components.wagpunk_arena_manager.bosscooldowntask)
         end
     },
+
+    {
+        name = "rocky_boss",
+        aliases = {"rb"},
+        prefab = "rocky_boss",
+        timername = "rockyboss_timetospawn",
+    },
+
+    {
+        name = "bat_boss",
+        aliases = {"bb"},
+        prefab = "batbosscave",
+        spawner = "batbosscave",
+        timername = "ChildSpawner_RegenPeriod",
+    },
 }
 
 for i, v in ipairs(tips_list) do

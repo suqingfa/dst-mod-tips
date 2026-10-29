@@ -49,7 +49,7 @@ configuration_options =
 
     {
         name = "prime_mate",
-        label = "prime_mate",
+        label = "prime mate",
         options = {
             {description = "ON", data = true},
             {description = "OFF", data = false},
@@ -89,7 +89,7 @@ configuration_options =
 
     {
         name = "klaus_sack",
-        label = "klaus_sack",
+        label = "klaus sack",
         options = {
             {description = "ON", data = true},
             {description = "OFF", data = false},
@@ -140,7 +140,7 @@ configuration_options =
 
     {
         name = "atrium_gate",
-        label = "atrium_gate",
+        label = "atrium gate",
         options = {
             {description = "ON", data = true},
             {description = "OFF", data = false},
@@ -160,7 +160,7 @@ configuration_options =
 
     {
         name = "lunarrift_portal",
-        label = "lunarrift_portal",
+        label = "lunarrift portal",
         options = {
             {description = "ON", data = true},
             {description = "OFF", data = false},
@@ -190,7 +190,27 @@ configuration_options =
 
     {
         name = "wagboss_robot",
-        label = "wagboss_robot",
+        label = "wagboss robot",
+        options = {
+            {description = "ON", data = true},
+            {description = "OFF", data = false},
+        },
+        default = false,
+    },
+
+    {
+        name = "rocky_boss",
+        label = "rocky boss",
+        options = {
+            {description = "ON", data = true},
+            {description = "OFF", data = false},
+        },
+        default = false,
+    },
+
+    {
+        name = "bat_boss",
+        label = "bat boss",
         options = {
             {description = "ON", data = true},
             {description = "OFF", data = false},
