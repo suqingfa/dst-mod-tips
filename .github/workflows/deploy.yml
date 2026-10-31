@@ -1,41 +1,47 @@
-name: DST mod push
+name: Upload to Steam Workshop
 
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: [published]
 
 jobs:
-  build:
+  upload:
     runs-on: ubuntu-latest
-    container:
-      image: steamcmd/steamcmd
-      env:
-        STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
-        STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
-        STEAM_AUTH_CODE: ${{ secrets.STEAM_AUTH_CODE }}
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@main
 
-      - name: change modinfo.lua version
-        run: sed -i 's/version = "0.0.0"/version = "${{ github.ref_name }}"/' mod/modinfo.lua
+      - name: Setup SteamCMD
+        uses: andriivitiv/setup-steamcmd@v1
 
-      - name: write workshop.vdf
+      - name: Setup SteamCMD config.vdf
+        env:
+          STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
+        run: >
+          echo "$STEAM_CONFIG_VDF" | base64 -d > ~/Steam/config/config.vdf
+
+      - name: Config mod/modinfo.lua
+        run: sed -i "s/0.0.0/$GITHUB_REF_NAME/" mod/modinfo.lua
+
+      - name: Generate workshop.vdf
+        env:
+          ITEM_ID: ${{ vars.ITEM_ID }}
         run: |
-          tee workshop.vdf <<-EOF
+          cat <<EOF > $GITHUB_WORKSPACE/workshop.vdf
           "workshopitem"
           {
-            "appid"            "322330"
-            "publishedfileid"  "1898292532"
-            "contentfolder"    "mod"
-            "changenote"       "${{ github.ref_name }}"
+            "appid"             "322330"
+            "publishedfileid"   "$ITEM_ID" // 0 创建新项目
+            "contentfolder"     "$GITHUB_WORKSPACE/mod"
+            "changenote"        "${{ github.event.release.body }}"
           }
           EOF
 
-      - name: push mod
-        run: |
-          steamcmd \
-          +login $STEAM_USERNAME $STEAM_PASSWORD $STEAM_AUTH_CODE \
-          +workshop_build_item $PWD/workshop.vdf \
+      - name: Upload Item to Workshop
+        env:
+          STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+          STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
+        run: >
+          steamcmd
+          +login "$STEAM_USERNAME" "$STEAM_PASSWORD"
+          +workshop_build_item "$GITHUB_WORKSPACE/workshop.vdf"
           +quit
